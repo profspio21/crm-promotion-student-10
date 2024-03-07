@@ -10,25 +10,27 @@
             <div class="card card-default">
                 <div class="card-body">
                     <div class="row">
-
                         <div class="col-lg-12 form-group">
                             <label for="recipient" class="control-label">
                                 {{ trans('global.recipient') }}
                             </label>
                             <select name="recipient" class="form-control">
                                 @foreach($users as $user)
-                                    <option value="{{ $user->id }}">{{ $user->staff ? $user->staff->name :'staff_random' }}</option>
+                                    @if ($user->staff)
+                                        <option value="{{ $user->id }}">{{ $user->staff ? $user->staff->name :'staff_random' }}</option>
+                                    @endif
+                                    @if ($user->registrant)
+                                        <option value="{{ $user->id }}">{{ $user->registrant ? $user->registrant->name : 'asdasd' }}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
-
                         <div class="col-lg-12 form-group">
                             <label for="subject" class="control-label">
                                 {{ trans('global.subject') }}
                             </label>
                             <input type="text" name="subject" class="form-control" />
                         </div>
-
                         <div class="col-lg-12 form-group">
                             <label for="content" class="control-label">
                                 {{ trans('global.content') }}

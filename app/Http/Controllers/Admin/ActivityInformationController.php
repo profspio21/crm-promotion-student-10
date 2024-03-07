@@ -24,11 +24,16 @@ class ActivityInformationController extends Controller
 
         $user = auth()->user();
 
-        abort_if(!$user->hasRole('pendaftar'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $informations = Information::where('target', $user->registrant->status)->where('type', '1')
+        if($user->hasRole('admin') || $user->hasRole('staff')) {
+            $informations = Information::where('type', '1')
                         ->where('start_publish_date', '<=', $now)->where('end_publish_date', '>=', $now)
                         ->get();
+        }
+        if($user->hasRole('registrant')) {
+            $informations = Information::where('target', $user->registrant ? $user->registrant->status : '99')->where('type', '1')
+                        ->where('start_publish_date', '<=', $now)->where('end_publish_date', '>=', $now)
+                        ->get();
+        }
 
         return view('admin.activity-informations.index', compact('informations'));
     }

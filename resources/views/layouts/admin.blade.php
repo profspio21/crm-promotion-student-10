@@ -225,22 +225,22 @@
       //     columns: ':visible'
       //   }
       // },
-      {
-        extend: 'excel',
-        className: 'btn-default',
-        text: excelButtonTrans,
-        exportOptions: {
-          columns: ':visible'
-        }
-      },
-      {
-        extend: 'pdf',
-        className: 'btn-default',
-        text: pdfButtonTrans,
-        exportOptions: {
-          columns: ':visible'
-        }
-      },
+      // {
+      //   extend: 'excel',
+      //   className: 'btn-default',
+      //   text: excelButtonTrans,
+      //   exportOptions: {
+      //     columns: ':visible'
+      //   }
+      // },
+      // {
+      //   extend: 'pdf',
+      //   className: 'btn-default',
+      //   text: pdfButtonTrans,
+      //   exportOptions: {
+      //     columns: ':visible'
+      //   }
+      // },
     ]
   });
 

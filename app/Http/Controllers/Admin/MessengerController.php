@@ -31,10 +31,18 @@ class MessengerController extends Controller
 
     public function createTopic()
     {
-        $users = User::with('staff')->whereHas('roles', function($q) {
-            return $q->where('title', 'Staff');
-            })->get()
-            ->except(Auth::id());
+        if(auth()->user()->hasRole('pendaftar')) {
+            $users = User::with('staff')->whereHas('roles', function($q) {
+                return $q->where('title', 'Staff');
+                })->get()
+                ->except(Auth::id());
+        }
+        if(auth()->user()->hasRole('staff')) {
+            $users = User::with('registrant')->whereHas('roles', function($q) {
+                    return $q->where('title', 'Pendaftar');
+                })->get()
+                ->except(Auth::id());
+        }
 
         $unreads = $this->unreadTopics();
 

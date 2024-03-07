@@ -24,11 +24,16 @@ class SelectionInformationController extends Controller
 
         $user = auth()->user();
 
-        abort_if(!$user->hasRole('pendaftar'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $informations = Information::with('comments')->where('target', $user->registrant->status)->where('type', '0')
-                        ->where('end_publish_date', '>=', $now)
+        if($user->hasRole('admin') || $user->hasRole('staff')) {
+            $informations = Information::with('comments')->where('type', '1')
+                        ->where('start_publish_date', '<=', $now)->where('end_publish_date', '>=', $now)
                         ->get();
+        }
+        if($user->hasRole('registrant')) {
+            $informations = Information::with('comments')->where('target', $user->registrant ? $user->registrant->status : '99')->where('type', '0')
+                        ->where('start_publish_date', '<=', $now)->where('end_publish_date', '>=', $now)
+                        ->get();
+        }
 
         $information_id = $request->information_id ?? '';
 

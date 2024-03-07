@@ -21,7 +21,7 @@
                             @if ($comment->sender_id === auth()->user()->id)
                                 <p style="text-align: right">{{ $comment->content }}</p>  
                             @else
-                                <p>{{ $comment->user->username }} : {{ $comment->content }}</p>  
+                                <p>{{ $comment->sender }} : {{ $comment->content }}</p>  
                             @endif
                         @endforeach
                     </div>
