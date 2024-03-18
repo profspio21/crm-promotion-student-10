@@ -24,29 +24,21 @@ Aplikasi ini bertujuan sebagai pusat informasi PMB UKDW
 To get started with the project, follow these steps:
 
 Clone the repository:
-    ```sh
+    ```
     git clone https://github.com/profspio21/crm-promotion-student-10.git
     ```
 
 Navigate into the project directory:
-    ```sh
     cd crm-promotion-student-10
-    ```
 
 Install dependencies using Composer:
-    ```sh
     composer install
-    ```
 
 Renave .env.example to .env :
-    ```sh
     mv .env.example .env
-    ```
 
 Generate keygen :
-    ```sh
-    php artisan keygen
-    ```
+    php artisan key:gen
 
 By default laravel menggunakan email untuk autentikasi login.
 Untuk mengubah parameter email menjadi username, lakukan langkah berikut : 
@@ -60,41 +52,35 @@ Untuk mengubah parameter email menjadi username, lakukan langkah berikut :
         ```
 
 Setup env (.env)
-    Database :
-        DB_CONNECTION=mysql
-        DB_HOST=your_host
-        DB_PORT=your_port
-        DB_DATABASE=your_database_name
-        DB_USERNAME=your_database_username
-        DB_PASSWORD=your_database_password
+Database :
+    DB_CONNECTION=mysql
+    DB_HOST=your_host
+    DB_PORT=your_port
+    DB_DATABASE=your_database_name
+    DB_USERNAME=your_database_username
+    DB_PASSWORD=your_database_password
     
-    Email :
-        MAIL_MAILER=smtp
-        MAIL_HOST=your_email_host
-        MAIL_PORT=465
-        MAIL_USERNAME=your_email_username
-        MAIL_PASSWORD=your_email_password
-        MAIL_FROM_ADDRESS=your_email
-        MAIL_FROM_NAME="${APP_NAME}"
+Email :
+    MAIL_MAILER=smtp
+    MAIL_HOST=your_email_host
+    MAIL_PORT=465
+    MAIL_USERNAME=your_email_username
+    MAIL_PASSWORD=your_email_password
+    MAIL_FROM_ADDRESS=your_email
+    MAIL_FROM_NAME="${APP_NAME}"
 
 Run migration only :
-    ```sh
     php artisan migrate
-    ```
 
 Run seeder database
-     ```sh
     php artisan db:seed
-    ```
 
 To run server :
-    ```sh
     php artisan serve
-    ```
 
 ## Thanks to
-    1. [Laravel 10](https://laravel.com/docs/11.x)
-    2. UI [Admin LTE v3](https://adminlte.io/docs/3.0/index.html)
+- [Laravel 10](https://laravel.com/docs/11.x)
+- UI [Admin LTE v3](https://adminlte.io/docs/3.0/index.html)
     
 ## Contributing
 
