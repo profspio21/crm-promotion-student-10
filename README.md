@@ -29,3 +29,100 @@ To get started with the project, follow these steps:
     git clone https://github.com/profspio21/crm-promotion-student-10.git
     ```
 
+2. Navigate into the project directory:
+
+    ```sh
+    cd crm-promotion-student-10
+    ```
+
+3. Install dependencies using Composer:
+
+    ```sh
+    composer install
+    ```
+
+4. Rename `.env.example` to `.env`:
+
+    ```sh
+    mv .env.example .env
+    ```
+
+5. Generate application key:
+
+    ```sh
+    php artisan key:generate
+    ```
+
+By default, Laravel uses email for login authentication. To change the parameter to use a username, follow these steps:
+
+1. Open the file `vendor/laravel/ui/auth-backend/AuthenticateUsers`.
+
+2. Change the `username()` method:
+
+    ```php
+    public function username()
+    {
+        return 'username';
+    }
+    ```
+
+Setup env (.env) Database:
+
+    ```env
+    DB_CONNECTION=mysql
+    DB_HOST=your_host
+    DB_PORT=your_port
+    DB_DATABASE=your_database_name
+    DB_USERNAME=your_database_username
+    DB_PASSWORD=your_database_password
+    ```
+    
+Email :
+
+    ```env
+    MAIL_MAILER=smtp
+    MAIL_HOST=your_email_host
+    MAIL_PORT=465
+    MAIL_USERNAME=your_email_username
+    MAIL_PASSWORD=your_email_password
+    MAIL_FROM_ADDRESS=your_email
+    MAIL_FROM_NAME="${APP_NAME}"
+    ```
+
+Run migration only :
+
+    ```php
+    php artisan migrate
+    ```
+
+Run seeder database :
+
+    ```php
+    php artisan db:seed
+    ```
+
+To run server :
+
+    ```php
+    php artisan serve
+    ```
+
+## Thanks to
+- [Laravel 10](https://laravel.com/docs/11.x)
+- UI [Admin LTE v3](https://adminlte.io/docs/3.0/index.html)
+    
+## Contributing
+
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+
+## Code of Conduct
+
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+
+## Security Vulnerabilities
+
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+
+## License
+
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
