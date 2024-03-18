@@ -64,8 +64,11 @@ By default, Laravel uses email for login authentication. To change the parameter
     {
         return 'username';
     }
+    ```
 
-Setup env (.env) Database:
+Setup env (.env)
+
+1. Database:
 
     ```env
     DB_CONNECTION=mysql
@@ -76,7 +79,7 @@ Setup env (.env) Database:
     DB_PASSWORD=your_database_password
     ```
     
-Email :
+2. Email :
 
     ```env
     MAIL_MAILER=smtp
@@ -88,19 +91,21 @@ Email :
     MAIL_FROM_NAME="${APP_NAME}"
     ```
 
-Run migration only :
+## Migration and seeding database
+
+1. Run migration :
 
     ```php
     php artisan migrate
     ```
 
-Run seeder database :
+2. Run seeder database :
 
     ```php
     php artisan db:seed
     ```
 
-To run server :
+3. To run server :
 
     ```php
     php artisan serve
