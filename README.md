@@ -59,12 +59,10 @@ By default, Laravel uses email for login authentication. To change the parameter
 
 2. Change the `username()` method:
 
-    ```php
     public function username()
     {
         return 'username';
     }
-    ```
 
 Setup env (.env) Database:
 
