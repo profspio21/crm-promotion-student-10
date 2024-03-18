@@ -24,7 +24,9 @@ Aplikasi ini bertujuan sebagai pusat informasi PMB UKDW
 To get started with the project, follow these steps:
 
 Clone the repository:
+    ```sh
     git clone https://github.com/profspio21/crm-promotion-student-10.git
+    ```
 
 Navigate into the project directory:
     cd crm-promotion-student-10
