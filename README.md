@@ -26,7 +26,6 @@ To get started with the project, follow these steps:
 Clone the repository:
     ```
     git clone https://github.com/profspio21/crm-promotion-student-10.git
-    ```
 
 Navigate into the project directory:
     cd crm-promotion-student-10
@@ -44,12 +43,10 @@ By default laravel menggunakan email untuk autentikasi login.
 Untuk mengubah parameter email menjadi username, lakukan langkah berikut : 
     1.  Buka folder vendor/laravel/ui/auth-backend/AuthenticateUsers
     2.  Ubah parameter username()
-        ```sh
         public function username()
         {
             return 'username';
         }
-        ```
 
 Setup env (.env)
 Database :
