@@ -29,7 +29,7 @@ class SelectionInformationController extends Controller
                         ->where('start_publish_date', '<=', $now)->where('end_publish_date', '>=', $now)
                         ->get();
         }
-        if($user->hasRole('registrant')) {
+        if($user->registrant) {
             $informations = Information::with('comments')->where('target', $user->registrant ? $user->registrant->status : '99')->where('type', '0')
                         ->where('start_publish_date', '<=', $now)->where('end_publish_date', '>=', $now)
                         ->get();
@@ -62,6 +62,7 @@ class SelectionInformationController extends Controller
     public function show(Information $information)
     {
         //
+        return view('admin.selection-informations.show', compact('information'));
     }
 
     /**

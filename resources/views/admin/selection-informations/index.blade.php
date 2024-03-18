@@ -10,6 +10,12 @@
             <div class="col--lg-2">
                 <button type="button" class="btn btn-primary showMessages">Tanggapi</button>
             </div>
+            <div class="col-lg-1">
+
+            </div>
+            <div class="col--lg-2">
+                <a class="btn btn-info" href="{{ route('admin.selection-informations.show', $information->id) }}">Detail</a>
+            </div>
         </div>
 
         <div id="card-body-{{ $information->id }}" class="card-body" style="display: none;">
@@ -20,8 +26,10 @@
                         @foreach ($information->comments as $comment)
                             @if ($comment->sender_id === auth()->user()->id)
                                 <p style="text-align: right">{{ $comment->content }}</p>  
-                            @else
-                                <p>{{ $comment->sender }} : {{ $comment->content }}</p>  
+                            @elseif ( $comment->user->staff )
+                                <p>{{ $comment->user->staff->name }} : {{ $comment->content }}</p>
+                            @elseif ( $comment->user->registrant )
+                            <p>{{ $comment->user->registrant->name }} : {{ $comment->content }}</p>  
                             @endif
                         @endforeach
                     </div>
@@ -38,6 +46,8 @@
         </div>
     </div>
 @endforeach
+
+{{-- Grafik --}}
 @endsection
 
 @section('scripts')

@@ -84,6 +84,8 @@
             </table>
         </div>
     </div>
+
+    @include('admin.expoes.modal-pdf')
 </div>
 
 
@@ -123,6 +125,20 @@
   }
   dtButtons.push(deleteButton)
 @endcan
+
+// pdf
+let pdfCustomButton = {
+    text: 'PDF',
+    className: 'btn-primary',
+    action: function (e, dt, node, config) {
+                    $('#pdfModal').modal('show');
+                }
+    // on click show modal that have input start Date , end Date, and status
+
+    // modal have download or OK button to download PDF
+    }
+
+    dtButtons.push(pdfCustomButton)
 
   $.extend(true, $.fn.dataTable.defaults, {
     orderCellsTop: true,

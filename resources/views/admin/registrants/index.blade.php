@@ -11,6 +11,10 @@
             <a class="btn btn-success" href="{{ route('admin.registrants.create', ['status' => $status]) }}">
                 {{ trans('global.add') }} {{ trans('cruds.registrant.title_singular') }}
             </a>
+            <button class="btn btn-warning" data-toggle="modal" data-target="#csvImportModal">
+                {{ trans('global.importData') }}
+            </button>
+            @include('csvImport.modal', ['model' => 'Registrant', 'route' => 'admin.registrants.parseCsvImport', 'status' => $status])
         </div>
     @endcan
 
@@ -23,8 +27,16 @@
 
                         </th>
                         <th>
+                            {{ trans('cruds.registrant.fields.created_at') }}
+                        </th>
+                        <th>
                             {{ trans('cruds.registrant.fields.nomor_daftar') }}
                         </th>
+                        @if ($status == 2)
+                        <th>
+                            {{ trans('cruds.registrant.fields.nim') }}
+                        </th>
+                        @endif
                         <th>
                             {{ trans('cruds.registrant.fields.name') }}
                         </th>
@@ -34,9 +46,9 @@
                         <th>
                             {{ trans('cruds.registrant.fields.prodi') }}
                         </th>
-                        <th>
+                        {{-- <th>
                             {{ trans('cruds.registrant.fields.status') }}
-                        </th>
+                        </th> --}}
                         <th>
                             {{ trans('cruds.user.fields.username') }}
                         </th>
@@ -52,8 +64,16 @@
 
                             </td>
                             <td>
+                                {{ $registrant->created_at_label ?? '' }}
+                            </td>
+                            <td>
                                 {{ $registrant->nomor_daftar ?? '' }}
                             </td>
+                            @if ( $status == 2 )
+                                <td>
+                                    {{ $registrant->nim ?? '-'}}
+                                </td>
+                            @endif
                             <td>
                                 {{ $registrant->name ?? '' }}
                             </td>
@@ -63,11 +83,11 @@
                             <td>
                                 {{ $registrant->prodi ?? '' }}
                             </td>
-                            <td>
+                            {{-- <td>
                                 {{ App\Models\Registrant::STATUS_SELECT[$registrant->status] ?? '' }}
-                            </td>
+                            </td> --}}
                             <td>
-                                {{ $registrant->user->name ?? 'Tidak ada' }}
+                                {{ $registrant->user->username ?? 'Tidak ada' }}
                             </td>
                             <td>
                                 @can('registrant_show')
@@ -98,9 +118,9 @@
             </table>
         </div>
     </div>
+
+    @include('admin.registrants.modal-pdf')
 </div>
-
-
 
 @endsection
 @section('scripts')
@@ -108,6 +128,8 @@
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+
+  // mass delete
 @can('registrant_delete')
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
@@ -138,16 +160,30 @@
   dtButtons.push(deleteButton)
 @endcan
 
-  $.extend(true, $.fn.dataTable.defaults, {
-    orderCellsTop: true,
-    order: [[ 1, 'desc' ]],
-    pageLength: 100,
-  });
-  let table = $('.datatable-Registrant:not(.ajaxTable)').DataTable({ buttons: dtButtons })
-  $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
-      $($.fn.dataTable.tables(true)).DataTable()
-          .columns.adjust();
-  });
+// pdf
+    let pdfCustomButton = {
+    text: 'PDF',
+    className: 'btn-primary',
+    action: function (e, dt, node, config) {
+                    $('#pdfModal').modal('show');
+                }
+    // on click show modal that have input start Date , end Date, and status
+
+    // modal have download or OK button to download PDF
+    }
+
+    dtButtons.push(pdfCustomButton)
+
+    $.extend(true, $.fn.dataTable.defaults, {
+        orderCellsTop: true,
+        order: [[ 1, 'desc' ]],
+        pageLength: 100,
+    });
+    let table = $('.datatable-Registrant:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+    $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
+        $($.fn.dataTable.tables(true)).DataTable()
+            .columns.adjust();
+    });
   
 })
 

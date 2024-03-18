@@ -31,12 +31,17 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('staffs', 'StaffController');
 
     // Registrant
+    Route::post('registrants/parse-csv-import', 'RegistrantController@parseCsvImport')->name('registrants.parseCsvImport');
+    Route::post('registrants/process-csv-import', 'RegistrantController@processCsvImport')->name('registrants.processCsvImport');
+    Route::post('registrants/report', 'RegistrantController@report')->name('registrants.report');
     Route::delete('registrants/destroy', 'RegistrantController@massDestroy')->name('registrants.massDestroy');
     Route::post('registrants/media', 'RegistrantController@storeMedia')->name('registrants.storeMedia');
     Route::post('registrants/ckmedia', 'RegistrantController@storeCKEditorImages')->name('registrants.storeCKEditorImages');
     Route::resource('registrants', 'RegistrantController');
 
     // Expo
+    Route::post('expos/report', 'ExpoController@report')->name('expos.report');
+    Route::get('expos/report-detail-expo', 'ExpoController@reportDetailExpo')->name('expos.reportDetailExpo');
     Route::post('expos/parse-csv-import', 'ExpoController@parseCsvImport')->name('expos.parseCsvImport');
     Route::post('expos/process-csv-import', 'ExpoController@processCsvImport')->name('expos.processCsvImport');
     Route::delete('expoes/destroy', 'ExpoController@massDestroy')->name('expoes.massDestroy');
@@ -54,7 +59,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     // Pusat informasi seleksi untuk pendaftar
     Route::resource('selection-informations', 'SelectionInformationController')->parameters(['selection-informations' => 'information']);
-    Route::resource('comments', 'CommentsCOntroller');
+    Route::resource('comments', 'CommentsController');
 
     // Pusat informasi seleksi untuk pendaftar
     Route::resource('activity-informations', 'ActivityInformationController')->parameters(['activity-informations' => 'information']);

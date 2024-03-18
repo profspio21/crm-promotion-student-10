@@ -17,7 +17,7 @@ class Registrant extends Model implements HasMedia
     public $table = 'registrants';
 
     protected $appends = [
-        'photo', 'status_label'
+        'photo', 'status_label', 'creted_at_label', 'list_prodi'
     ];
 
     protected $dates = [
@@ -35,6 +35,11 @@ class Registrant extends Model implements HasMedia
         '0' => 'pendaftar_belum_diterima',
         '1' => 'pendaftar_belum_registrasi',
         '2' => 'pendaftar_sudah_registrasi',
+    ];
+
+    public const LIST_PRODI = [
+        'Manajemen','Akuntansi','Pendidikan bahasa inggris','Studi humanitas',
+        'Biotek','Kedokteran','Sistem informasi','Informatika','Desain produk','Arsitektur','Teologi'
     ];
 
     protected $fillable = [
@@ -90,5 +95,10 @@ class Registrant extends Model implements HasMedia
     public function getStatusLabelAttribute(): string
     {
         return self::STATUS_SELECT[$this->status] ?? 'Status not defined';
+    }
+
+    public function getCreatedAtLabelAttribute()
+    {
+        return $this->attributes['created_at'] ? Carbon::parse($this->attributes['created_at'])->format(config('panel.date_format')) : null;
     }
 }

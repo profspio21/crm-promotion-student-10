@@ -29,7 +29,7 @@ class ActivityInformationController extends Controller
                         ->where('start_publish_date', '<=', $now)->where('end_publish_date', '>=', $now)
                         ->get();
         }
-        if($user->hasRole('registrant')) {
+        if($user->registrant) {
             $informations = Information::where('target', $user->registrant ? $user->registrant->status : '99')->where('type', '1')
                         ->where('start_publish_date', '<=', $now)->where('end_publish_date', '>=', $now)
                         ->get();

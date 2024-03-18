@@ -14,10 +14,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
 use Illuminate\Support\Facades\DB;
+use PDF;
+use Carbon\Carbon;
+use App\Http\Controllers\Traits\CsvImportTrait;
 
 class RegistrantController extends Controller
 {
-    use MediaUploadingTrait;
+    use MediaUploadingTrait, CsvImportTrait;
 
     public function index(Request $request)
     {
@@ -162,5 +165,19 @@ class RegistrantController extends Controller
         $media         = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media');
 
         return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
+    }
+
+    public function report(Request $request)
+    {
+        $status = Registrant::STATUS_SELECT[$request->status];
+        $startDate = Carbon::createFromFormat('Y-m-d', $request->startDate)->format('d F Y');
+        $endDate = Carbon::createFromFormat('Y-m-d', $request->endDate)->format('d F Y');
+        $now = Carbon::now()->format('d F Y');
+
+        $registrants = Registrant::where('status', $request->status)->whereBetween('created_at', [$request->startDate, $request->endDate])->orderBy('created_at')->get();
+
+        $pdf = PDF::loadview('report.registrant', ['registrants' => $registrants, 'status' => $status, 'startDate' => $startDate, 'endDate' => $endDate, 'now' => $now]);
+
+        return $pdf->stream();
     }
 }

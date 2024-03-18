@@ -2,7 +2,8 @@
 @section('content')
 <div class="card">
     <div class="card-header" style="align-items: center; justify-content: space-between">
-        {{ trans('global.detail') }} {{ trans('cruds.expo.title') }}
+            {{ trans('global.detail') }} {{ trans('cruds.expo.title') }}
+            <a href="{{ route('admin.expos.reportDetailExpo', ['expo_id' => $expo->id]) }}" target="_blank" class="btn btn-primary" type="button" style="float: right">PDF Download</a>
     </div>
 
     <div class="card-body">

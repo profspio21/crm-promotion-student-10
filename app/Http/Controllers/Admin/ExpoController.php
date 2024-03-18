@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Traits\CsvImportTrait;
+use PDF;
+use Carbon\Carbon;
 
 class ExpoController extends Controller
 {
@@ -170,4 +172,29 @@ class ExpoController extends Controller
 
         return redirect()->route('admin.expoes.index', ['type' => $request->type]);
     }
+
+    public function report(Request $request)
+    {
+        $type = Expo::TYPE_SELECT[$request->type];
+        $startDate = Carbon::createFromFormat('Y-m-d', $request->startDate)->format('d F Y');
+        $endDate = Carbon::createFromFormat('Y-m-d', $request->endDate)->format('d F Y');
+        $now = Carbon::now()->format('d F Y');
+
+        $expos = Expo::where('type', $request->type)->whereBetween('created_at', [$request->startDate, $request->endDate])->get();
+
+        $pdf = PDF::loadview('report.expo', ['expos' => $expos, 'type' => $type, 'startDate' => $startDate, 'endDate' => $endDate, 'now' => $now]);
+
+        return $pdf->stream();
+    }
+
+    public function reportDetailExpo(Request $request)
+    {
+        $expo = Expo::with('detailExpo')->findOrFail($request->expo_id);
+        $now = Carbon::now()->format('d F Y');
+        $pdf = PDF::loadview('report.detailExpo', ['expo' => $expo, 'now' => $now]);
+
+        return $pdf->stream();
+
+    }
+
 }

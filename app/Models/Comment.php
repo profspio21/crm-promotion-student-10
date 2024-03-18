@@ -37,22 +37,22 @@ class Comment extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'sender_id');
+        return $this->belongsTo(User::class, 'sender_id')->with('roles');
     }
 
     public function sender()
     {
-        if($this->user->hasRole('admin')) {
-            return $this->user->username;
-        }
+        // if($this->user()->hasRole('admin')) {
+        //     return $this->user->username;
+        // }
 
-        if($this->user->hasRole('staff')) {
-            return $this->user->staff->name;
-        }
+        // if($this->user()->hasRole('staff')) {
+        //     return $this->user->staff->name;
+        // }
 
-        if($this->user->hasRole('pendaftar')) {
-            return $this->user->pendaftar->name;
-        }
+        // if($this->user()->hasRole('pendaftar')) {
+        //     return $this->user->pendaftar->name;
+        // }
 
         return null;
     }

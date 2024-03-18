@@ -51,7 +51,12 @@
                     </div>
                     <div class="form-group">
                         <label for="prodi">{{ trans('cruds.registrant.fields.prodi') }}</label>
-                        <input class="form-control {{ $errors->has('prodi') ? 'is-invalid' : '' }}" type="text" name="prodi" id="prodi" value="{{ old('prodi', $registrant->prodi) }}">
+                        <select class="form-control {{ $errors->has('prodi') ? 'is-invalid' : '' }}" name="prodi" id="prodi">
+                            <option value disabled {{ old('prodi', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
+                            @foreach(App\Models\Registrant::LIST_PRODI as $value)
+                                <option value="{{ $value }}" {{ old('prodi', $registrant->prodi) === (string) $value ? 'selected' : '' }}>{{ $value }}</option>
+                            @endforeach
+                        </select>
                         @if($errors->has('prodi'))
                             <span class="text-danger">{{ $errors->first('prodi') }}</span>
                         @endif

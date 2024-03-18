@@ -7,22 +7,122 @@
                 <div class="card-header">
                     Dashboard
                 </div>
-
-                <div class="card-body">
-                    @if(session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    Ada 2 dashboard, untuk staff dan admin
+                <br>
+                <div class="card-header">
+                    Pengumuman Seleksi
                 </div>
+                <br>
+
+                @foreach ($selection_informations as $information)
+                <div class="card">
+                    <div id="card-header-{{ $information->id }}" class="card-header row" style="align-items: center;">
+                        <div class="col-lg-9">
+                            <h5 class="card-title">{{ $information->title ?? ''}} akan diumumkan melalui {{ App\Models\Information::MEDIA_SELECT[$information->media_informasi] ?? ''}} pada tanggal {{ $information->start_publish_date_label ?? ''}}</h5>
+                        </div>
+                        <div class="col--lg-2">
+                            <button type="button" class="btn btn-primary showMessages">Tanggapi</button>
+                        </div>
+                        <div class="col-lg-1">
+            
+                        </div>
+                        <div class="col--lg-2">
+                            <a class="btn btn-info" href="{{ route('admin.selection-informations.show', $information->id) }}">Detail</a>
+                        </div>
+                    </div>
+            
+                    <div id="card-body-{{ $information->id }}" class="card-body" style="display: none;">
+                        <form action="{{route('admin.comments.store', ['information_id' => $information->id])}}" method="post" style="align-items: center;">
+                            @csrf
+                            <div class="row">
+                                <div class="col-lg-9">
+                                    @foreach ($information->comments as $comment)
+                                        @if ($comment->sender_id === auth()->user()->id)
+                                            <p style="text-align: right">{{ $comment->content }}</p>  
+                                        @elseif ( $comment->user->staff )
+                                            <p>{{ $comment->user->staff->name }} : {{ $comment->content }}</p>
+                                        @elseif ( $comment->user->registrant )
+                                        <p>{{ $comment->user->registrant->name }} : {{ $comment->content }}</p>  
+                                        @endif
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" name="content">
+                                </div>
+                                <div class="col-lg-2">
+                                    <button type="submit" class="btn btn-success">Kirim</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            @endforeach
             </div>
         </div>
+    </div>
+    <br>
+    <div class="card-header">
+        Pengumuman Kegiatan
+    </div>
+    <br>
+    <div class="row" style="justify-content: center">
+        @foreach ($activity_informations as $information)
+        <div class="card text-center col-lg-3 mx-4">
+          <img class="card-img-top" src="{{ $information->poster ? $information->poster->getUrl() : asset('img/poster.jpg')}}" alt="Card image cap" style="margin-top: 20px; max-height: 200px; height: 100%; width: auto; object-fit: contain">
+          <div class="card-body">
+            <h5 class="card-title">{{ $information->title ?? ''}}</h5>
+            <br>
+            <a href="{{ route('admin.activity-informations.show', ['information' => $information->id]) }}" class="btn btn-primary">Detail</a>
+          </div>
+      </div>
+        @endforeach
     </div>
 </div>
 @endsection
 @section('scripts')
-@parent
+<script>
+    $(document).ready(function() {
+        // jQuery function to handle button click
+        $('.showMessages').click(function() {
+            // Find the closest card body element
+            var cardBody = $(this).closest('.card').find('.card-body');
+            
+            // Toggle the visibility of the card body
+            cardBody.toggle();
+
+            // Toggle the button text between "Messages" and "Cancel"
+            if (cardBody.is(':visible')) {
+                $(this).text("Batal");
+                $(this).removeClass("btn-primary");
+                $(this).addClass("btn-danger");
+            } else {
+                $(this).text("Tanggapi");
+                $(this).removeClass("btn-danger");
+                $(this).addClass("btn-primary");
+            }
+        });
+
+        // Parameter information_id, jika sesuai maka akan dibuka
+        var url = window.location.href;
+        var queryString = url.split('?')[1];
+        var queryParams = queryString.split('&');
+        var params = {};
+        queryParams.forEach(function(param) {
+            var keyValue = param.split('=');
+            var key = decodeURIComponent(keyValue[0]);
+            var value = decodeURIComponent(keyValue[1]);
+            params[key] = value;
+        });
+        var informationId = params['information_id'];
+        
+        if (informationId) {
+            var elementId = '#card-header-' + informationId;
+            var messagesOpen = $(elementId);
+            console.log(messagesOpen.find('button'))
+            messagesOpen.find('button').click()
+        }
+    });
+</script>
 
 @endsection

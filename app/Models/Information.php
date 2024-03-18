@@ -102,7 +102,7 @@ class Information extends Model implements HasMedia
 
     public function comments()
     {
-        return $this->hasMany(Comment::class)->with('sender');
+        return $this->hasMany(Comment::class);
     }
 
 }

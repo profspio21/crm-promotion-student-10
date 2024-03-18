@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use SpreadsheetReader;
 use App\Models\Expo;
+use App\Models\Registrant;
 
 trait CsvImportTrait
 {
@@ -31,6 +32,10 @@ trait CsvImportTrait
                 $expo = Expo::create(['tanggal' => $request->tanggal, 'tempat' => $request->tempat, 'pic' => $request->pic, 'type' => $request->type]);
             }
 
+            if($modelName === 'Registrant') {
+                $all_registrants = Registrant::pluck('nomor_daftar');
+            }
+
             foreach ($reader as $key => $row) {
                 if ($hasHeader && $key == 0) {
                     continue;
@@ -39,9 +44,21 @@ trait CsvImportTrait
                 $tmp = [];
                 foreach ($fields as $header => $k) {
                     if (isset($row[$k])) {
-                        $tmp[$header] = $row[$k];
                         if($modelName === 'DetailExpo') {
+                            $tmp[$header] = $row[$k];
                             $tmp['expo_id'] = $expo->id;
+                        }
+                        if($modelName === 'Registrant') {
+                            if (!in_array($row[$k], $all_registrants)) {
+                                $tmp[$header] = $row[$k];
+                                $tmp['status'] = $request->status;
+                            }
+                            if (in_array($row[$k], $all_registrants)) {
+                                $tmpUpdate[$header] = $row[$k];
+                                $tmpUpdate['status'] = $request->status;
+                                $registrant = Registrant::where('nomor_daftar', $tmp['nomor_daftar'])->first();
+                                $registrant->update($tmpUpdate);
+                            }
                         }
                     }
                 }

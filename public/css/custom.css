@@ -115,3 +115,11 @@ div.dt-button-collection {
 .form-control:disabled {
     background-color: #e3edf8;
 }
+
+.card-header {
+    padding: 0.25rem 1rem;
+}
+
+.card-header .card-title {
+    font-size: 16px;
+}

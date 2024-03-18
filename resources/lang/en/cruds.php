@@ -120,7 +120,7 @@ return [
             'status_helper'       => ' ',
             'user'                => 'User',
             'user_helper'         => ' ',
-            'created_at'          => 'Created at',
+            'created_at'          => 'Tanggal Daftar',
             'created_at_helper'   => ' ',
             'updated_at'          => 'Updated at',
             'updated_at_helper'   => ' ',

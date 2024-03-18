@@ -13,6 +13,10 @@ class Expo extends Model
 
     public $table = 'expoes';
 
+    protected $appends = [
+      'tanggal_label'  
+    ];
+
     protected $dates = [
         'created_at',
         'updated_at',
@@ -40,6 +44,11 @@ class Expo extends Model
     public function getTanggalAttribute($value)
     {
         return $value ? Carbon::parse($value)->format(config('panel.date_format')) : null;
+    }
+
+    public function getTanggalLabelAttribute()
+    {
+        return $this->attributes['tanggal'] ? Carbon::parse($this->attributes['tanggal'])->format('d F Y') : null;
     }
 
     public function setTanggalAttribute($value)
