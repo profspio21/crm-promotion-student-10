@@ -22,11 +22,11 @@ class StoreRegistrantRequest extends FormRequest
             ],
             'nim' => [
                 'string',
-                'nullable',
+                'requi',
             ],
             'name' => [
                 'string',
-                'nullable',
+                'required',
             ],
             'phone' => [
                 'nullable',

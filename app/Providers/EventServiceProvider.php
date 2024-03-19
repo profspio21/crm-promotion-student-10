@@ -28,7 +28,7 @@ class EventServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
-        // Information::observe(InformationActionObserver::class);
+        Information::observe(InformationActionObserver::class);
     }
 
     /**

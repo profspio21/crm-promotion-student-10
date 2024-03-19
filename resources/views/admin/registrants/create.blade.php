@@ -30,16 +30,16 @@
                         <span class="help-block">{{ trans('cruds.registrant.fields.status_helper') }}</span>
                     </div>
                     <div class="form-group">
-                        <label for="nomor_daftar">{{ trans('cruds.registrant.fields.nomor_daftar') }}</label>
-                        <input class="form-control {{ $errors->has('nomor_daftar') ? 'is-invalid' : '' }}" type="text" name="nomor_daftar" id="nomor_daftar" value="{{ old('nomor_daftar', '') }}">
+                        <label for="nomor_daftar" class="required">{{ trans('cruds.registrant.fields.nomor_daftar') }}</label>
+                        <input required class="form-control required {{ $errors->has('nomor_daftar') ? 'is-invalid' : '' }}" type="text" name="nomor_daftar" id="nomor_daftar" value="{{ old('nomor_daftar', '') }}">
                         @if($errors->has('nomor_daftar'))
                             <span class="text-danger">{{ $errors->first('nomor_daftar') }}</span>
                         @endif
                         <span class="help-block">{{ trans('cruds.registrant.fields.nomor_daftar_helper') }}</span>
                     </div>
                     <div class="form-group">
-                        <label for="name">{{ trans('cruds.registrant.fields.name') }}</label>
-                        <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="name" value="{{ old('name', '') }}">
+                        <label for="name" class="required">{{ trans('cruds.registrant.fields.name') }}</label>
+                        <input required class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="name" value="{{ old('name', '') }}">
                         @if($errors->has('name'))
                             <span class="text-danger">{{ $errors->first('name') }}</span>
                         @endif
@@ -54,15 +54,16 @@
                         <span class="help-block">{{ trans('cruds.registrant.fields.phone_helper') }}</span>
                     </div>
                     <div class="form-group">
-                        <label for="tgl_lahir">{{ trans('cruds.registrant.fields.tgl_lahir') }}</label>
-                        <input class="form-control date {{ $errors->has('tgl_lahir') ? 'is-invalid' : '' }}" type="text" name="tgl_lahir" id="tgl_lahir" value="{{ old('tgl_lahir', '') }}">
+                        <label for="tgl_lahir" class="required">{{ trans('cruds.registrant.fields.tgl_lahir') }}</label>
+                        <input required class="form-control date {{ $errors->has('tgl_lahir') ? 'is-invalid' : '' }}" type="text" name="tgl_lahir" id="tgl_lahir" value="{{ old('tgl_lahir', '') }}">
                         @if($errors->has('tgl_lahir'))
                             <span class="text-danger">{{ $errors->first('tgl_lahir') }}</span>
                         @endif
                         <span class="help-block">{{ trans('cruds.registrant.fields.tgl_lahir_helper') }}</span>
                     </div>
                     <div class="form-group">
-                        <select class="form-control {{ $errors->has('prodi') ? 'is-invalid' : '' }}" name="prodi" id="prodi">
+                        <label for="prodi" class="required">{{ trans('cruds.registrant.fields.prodi') }}</label>
+                        <select required class="form-control {{ $errors->has('prodi') ? 'is-invalid' : '' }}" name="prodi" id="prodi">
                             <option value disabled {{ old('prodi', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
                             @foreach(App\Models\Registrant::LIST_PRODI as $value)
                                 <option value="{{ $value }}">{{ $value }}</option>

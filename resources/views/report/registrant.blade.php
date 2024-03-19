@@ -45,7 +45,7 @@
 				<tr>
 					<td>{{ $index+1 }}</td>
 					<td> {{ $registrant->nomor_daftar ?? '-'}} </td>
-					<td> {{ date_format($registrant->created_at, 'd F Y')}} </td>
+					<td> {{ $registrant->created_at_label}} </td>
 					@if ($status == 2)
 						<td> {{ $registrant->nim ?? '-'}} </td>
 					@endif

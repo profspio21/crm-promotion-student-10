@@ -18,6 +18,9 @@ Aplikasi ini bertujuan sebagai pusat informasi PMB UKDW
 - Reporting
 - Grafik dashboard
 
+## Requirement
+- PHP 8.1 or above
+- Composer 2
 
 ## Installation
 

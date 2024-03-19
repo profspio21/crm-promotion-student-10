@@ -183,7 +183,7 @@ class ExpoController extends Controller
         $expos = Expo::where('type', $request->type)->whereBetween('created_at', [$request->startDate, $request->endDate])->get();
 
         $pdf = PDF::loadview('report.expo', ['expos' => $expos, 'type' => $type, 'startDate' => $startDate, 'endDate' => $endDate, 'now' => $now]);
-
+        
         return $pdf->stream();
     }
 
@@ -191,6 +191,7 @@ class ExpoController extends Controller
     {
         $expo = Expo::with('detailExpo')->findOrFail($request->expo_id);
         $now = Carbon::now()->format('d F Y');
+
         $pdf = PDF::loadview('report.detailExpo', ['expo' => $expo, 'now' => $now]);
 
         return $pdf->stream();

@@ -57,7 +57,17 @@ class RegistrantController extends Controller
                     ]);
                 $user->roles()->sync(3);  // set roles, 3 untuk registrant
                 $registrant->update(['user_id' => $user->id]); // set user_id ke registrant
+            } else {
+                $user = User::create([
+                    'username' => $registrant->nomor_daftar,
+                    'email'    => null,
+                    'password' => $registrant->tgl_lahir
+                    ]);
+                $user->roles()->sync(3);  // set roles, 3 untuk registrant
+                $registrant->update(['user_id' => $user->id]); // set user_id ke registrant
             }
+
+            dd($registrant->tgl_lahir);
 
             // Photo
             if ($request->input('photo', false)) {

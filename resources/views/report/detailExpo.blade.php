@@ -22,7 +22,7 @@
 
 
 	<center style="padding-bottom: 19px">
-		<h4>Data Expo {{$expo->id}}</h4>
+		<h4>Data Expo</h4>
 		<p style="font-size: 12px">Dokumen ini dibuat pada : {{ $now }}</p>
 	</center>
 
