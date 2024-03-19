@@ -5,11 +5,11 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    Dashboard
+                    <h6>Dashboard</h6>
                 </div>
                 <br>
                 <div class="card-header">
-                    Pengumuman Seleksi
+                    <h4>Pengumuman Seleksi</h4>
                 </div>
                 <br>
 
@@ -63,7 +63,7 @@
     </div>
     <br>
     <div class="card-header">
-        Pengumuman Kegiatan
+        <h4>Pengumuman Kegiatan</h4>
     </div>
     <br>
     <div class="row" style="justify-content: center">
@@ -78,9 +78,50 @@
       </div>
         @endforeach
     </div>
+    <br>
+
+    {{-- Grafik --}}
+    <div class="card-header">
+        <h4>Grafik</h4>
+        <div class="row" style="align-items: center">
+            <div class="col-lg-3">
+                Pilih Range Tanggal
+            </div>
+            <div class="col-lg-3">
+                Dari : <input type="date" id="startDate" name="startDate" placeholder="Dari">
+            </div>
+            <div class="col-lg-3">
+                Sampai : <input type="date" id="endDate" name="endDate" placeholder="Sampai">
+            </div>
+            <div class="col-lg-3">
+                <button type="button" class="btn btn-info" onclick="graph()">Generate Grafik</button>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="card container">
+        <div class="row">
+            <div class="col-lg-4">
+                Perbandingan Expo Jawa dan Luar Jawa
+                <canvas id="expoChart"></canvas>
+            </div>
+            <div class="col-lg-4">
+                Minat Prodi dari Expo
+                <canvas id="expoProdiChart"></canvas>
+            </div>
+            <div class="col-lg-4">
+                Perbandingan Status Pendaftar
+                <canvas id="registrantsChart"></canvas>
+            </div>
+        </div>
+        <div class="row">
+            
+        </div>
+    </div>
 </div>
 @endsection
 @section('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     $(document).ready(function() {
         // jQuery function to handle button click
@@ -122,7 +163,119 @@
             console.log(messagesOpen.find('button'))
             messagesOpen.find('button').click()
         }
+
+
     });
+</script>
+<script>
+    var expoChart = null;
+    var expoProdiChart = null;
+    var registrantsChart = null;
+
+    function graph() {
+        var startDate = $('#startDate').val();
+        var endDate = $('#endDate').val();
+
+        if(startDate == '' || endDate == '') {
+            return alert('pilih rentang tanggal')
+        }
+
+        const url = "{{ route('admin.dashboard') }}";
+
+        $.ajax({
+            method: 'GET',
+            url: url,
+            data: {
+            "startDate" : startDate,
+            "endDate" : endDate,
+            }
+        }).then(function(response) {
+            if(response.success) {
+                filterdata = response;
+                updateChartData();      
+            } else {
+                alert('Error');
+            }
+        });
+
+        function updateChartData() {
+            // Update pie chart for expo
+            var expoLabels = Object.keys(filterdata.expo);
+            var expoData = Object.values(filterdata.expo);
+            updatePieChart('expoChart', expoLabels, expoData, expoChart);
+
+            // Update pie chart for expo_prodi
+            var expoProdiLabels = filterdata.expo_prodi.map(item => item.prodi);
+            var expoProdiData = filterdata.expo_prodi.map(item => item.count);
+            updatePieChart('expoProdiChart', expoProdiLabels, expoProdiData, expoProdiChart);
+
+            // Update pie chart for registrants
+            var registrantsLabels = filterdata.registrants.map(item => item.status_label);
+            var registrantsData = filterdata.registrants.map(item => item.count);
+            updatePieChart('registrantsChart', registrantsLabels, registrantsData, registrantsChart);
+        }
+
+        function updatePieChart(chartId, labels, data, existingChart) {
+            if(existingChart) {
+                existingChart.data.labels = labels;
+                existingChart.data.datasets[0].data = data;
+                existingChart.update();
+            } else {
+                var ctx = document.getElementById(chartId).getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: data,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.5)',
+                                'rgba(54, 162, 235, 0.5)',
+                                'rgba(255, 206, 86, 0.5)',
+                                'rgba(75, 192, 192, 0.5)',
+                                'rgba(153, 102, 255, 0.5)',
+                                'rgba(255, 159, 64, 0.5)'
+                            ]
+                        }]
+                    },
+                    options: {
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        var label = context.label || '';
+                                        var value = context.formattedValue || '';
+                                        var dataset = context.dataset;
+                                        var total = dataset.data.reduce(function(previousValue, currentValue) {
+                                            return previousValue + currentValue;
+                                        });
+                                        var currentValue = dataset.data[context.dataIndex];
+                                        var percentage = Math.round((currentValue / total) * 100);
+                                        return label + ': ' + value + ' (' + percentage + '%)';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                
+                switch(chartId) {
+                    case 'expoChart':
+                        expoChart = chart;
+                        break;
+                    case 'expoProdiChart':
+                        expoProdiChart = chart;
+                        break;
+                    case 'registrantsChart':
+                        registrantsChart = chart;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        
+    }
 </script>
 
 @endsection

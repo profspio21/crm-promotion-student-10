@@ -6,8 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Information;
 use App\Models\Expo;
+use App\Models\DetailExpo;
+use App\Models\Registrant;
 use Symfony\Component\HttpFoundation\Response;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -38,20 +41,34 @@ class HomeController extends Controller
 
     public function graph(Request $request)
     {
-        $startDate = Carbon::createFromFormat('d-m-Y', $request->startDate);
-        $endDate = Carbon::createFromFormat('d-m-Y', $request->endDate);
 
-        $expo['jawa'] = Expo::with('detailExpo')->where('type', '0')->whereBetween('tanggal', [$startDate, $endDate])->count();
-        $expo['luar_jawa'] = Expo::with('detailExpo')->where('type', '1')->whereBetween('tanggal', [$startDate, $endDate])->count();
-        $expo_prodi = Expo::select('prodi')
-                        ->whereBetween('tanggal', [$startDate, $endDate])
+        $expo['jawa'] = Expo::where('type', '0')->whereBetween('tanggal', [$request->startDate, $request->endDate])->count();
+        $expo['luar_jawa'] = Expo::where('type', '1')->whereBetween('tanggal', [$request->startDate, $request->endDate])->count();
+        $expo_prodi = DetailExpo::select('prodi', DB::raw('COUNT(*) as count'))
+                        ->whereHas('expo', function($q) use ($request) {
+                            $q->whereBetween('tanggal', [$request->startDate, $request->endDate]);
+                        })
                         ->groupBy('prodi')
                         ->orderBy('prodi')
                         ->get()
                         ->toArray();
+        $all_registrants = Registrant::select('status', DB::raw('COUNT(*) as count'))
+                        ->whereBetween('created_at', [$request->startDate, $request->endDate])
+                        ->groupBy('status')
+                        ->orderBy('status')
+                        ->get()
+                        ->toArray();
+
+        $registrants = array_map(function($item) {
+                            return [
+                                'status_label' => $item['status_label'],
+                                'count' => $item['count']
+                            ];
+                        }, $all_registrants);
+
 
         $prodiCounts = array_count_values(array_column($expo_prodi, 'prodi'));
 
-        return response()->json(['success' => true, 'expo' => $expo], 200);
+        return response()->json(['success' => true, 'expo' => $expo, 'expo_prodi' => $expo_prodi, 'registrants' => $registrants], 200);
     }
 }

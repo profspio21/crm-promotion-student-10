@@ -17,7 +17,7 @@ class Registrant extends Model implements HasMedia
     public $table = 'registrants';
 
     protected $appends = [
-        'photo', 'status_label', 'creted_at_label', 'list_prodi'
+        'photo', 'status_label', 'created_at_label'
     ];
 
     protected $dates = [
@@ -97,8 +97,14 @@ class Registrant extends Model implements HasMedia
         return self::STATUS_SELECT[$this->status] ?? 'Status not defined';
     }
 
-    public function getCreatedAtLabelAttribute()
+    public function getCreatedAtAttribute($value)
     {
-        return $this->attributes['created_at'] ? Carbon::parse($this->attributes['created_at'])->format(config('panel.date_format')) : null;
+        return $value ? Carbon::parse($value)->format('Y-m-d') : null;
     }
+
+    public function getCreatedAtLabelAttribute($value)
+    {
+        return $value ? Carbon::createFromFormat('Y-m-d', $value)->format(config('panel.date_format')) : null;
+    }
+
 }
