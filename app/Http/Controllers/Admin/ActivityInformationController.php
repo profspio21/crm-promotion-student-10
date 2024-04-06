@@ -60,6 +60,11 @@ class ActivityInformationController extends Controller
     public function show(Information $information)
     {
         //
+        $now = Carbon::now();
+        
+        if(auth()->user()->hasRole('Pendaftar') && $information->start_publish_date > $now) {
+            abort(Response::HTTP_FORBIDDEN, '403 Forbidden');
+        }
 
         return view('admin.activity-informations.show', compact('information'));
     }

@@ -73,7 +73,7 @@
                 <div class="row" style="align-items: center">
                     <div class="col-auto">
                         <div class="form-group">
-                            <input class="form-control date {{ $errors->has('start_publish_date') ? 'is-invalid' : '' }}" type="text" name="start_publish_date" id="start_publish_date" value="{{ old('start_publish_date', '') }}">
+                            <input class="form-control date {{ $errors->has('start_publish_date') ? 'is-invalid' : '' }}" type="text" name="start_publish_date" id="start_publish_date" value="{{ $information->start_publish_date_dmy }}">
                             </select>
                             @if($errors->has('start_publish_date'))
                                 <span class="text-danger">{{ $errors->first('start_publish_date') }}</span>
@@ -88,7 +88,7 @@
                     </div>
                     <div class="col-auto">
                         <div class="form-group">
-                            <input class="form-control date {{ $errors->has('end_publish_date') ? 'is-invalid' : '' }}" type="text" name="end_publish_date" id="end_publish_date" value="{{ old('end_publish_date', '') }}">
+                            <input class="form-control date {{ $errors->has('end_publish_date') ? 'is-invalid' : '' }}" type="text" name="end_publish_date" id="end_publish_date" value="{{ $information->end_publish_date_dmy }}">
                             </select>
                             @if($errors->has('end_publish_date'))
                                 <span class="text-danger">{{ $errors->first('end_publish_date') }}</span>

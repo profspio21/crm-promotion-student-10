@@ -25,7 +25,7 @@ class SelectionInformationController extends Controller
         $user = auth()->user();
 
         if($user->hasRole('admin') || $user->hasRole('staff')) {
-            $informations = Information::with('comments')->where('type', '1')
+            $informations = Information::with('comments')->where('type', '0')
                         ->where('start_publish_date', '<=', $now)->where('end_publish_date', '>=', $now)
                         ->get();
         }
@@ -62,6 +62,13 @@ class SelectionInformationController extends Controller
     public function show(Information $information)
     {
         //
+
+        $now = Carbon::now();
+        
+        if(auth()->user()->hasRole('Pendaftar') && $information->start_publish_date > $now) {
+            abort(Response::HTTP_FORBIDDEN, '403 Forbidden');
+        }
+        
         return view('admin.selection-informations.show', compact('information'));
     }
 

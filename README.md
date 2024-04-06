@@ -133,3 +133,43 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+# Setting Up a Task in Windows Task Scheduler
+
+Follow these steps to set up a task in Windows Task Scheduler to run a Laravel schedule:
+
+1. **Open Task Scheduler**
+   - Press the Windows key, search for "Task Scheduler," and open it.
+
+2. **Create a New Task**
+   - In the Task Scheduler library, right-click and choose "Create Task..." from the context menu or use the Action menu to select "Create Task...".
+
+3. **General Tab**
+   - Give your task a name, e.g., "Laravel Schedule Runner".
+   - Optionally, provide a description.
+   - Choose "Run whether user is logged on or not" if you want it to run in the background, or "Run only when the user is logged on" for testing purposes.
+   - Check "Run with highest privileges" for the task to have Administrator permissions, which might be necessary for certain operations.
+
+4. **Triggers Tab**
+   - Click "New..." to create a new trigger.
+   - Set the task to begin "On a schedule".
+   - Choose "Daily" and set it to recur every 1 day.
+   - Click on "Repeat task every:" and select "1 minute" from the dropdown, for a duration of "Indefinitely".
+   - Ensure "Enabled" is checked at the bottom of the window.
+   - Click "OK" to save the trigger.
+
+5. **Actions Tab**
+   - Click "New..." to create a new action.
+   - Set "Action" to "Start a program".
+   - In "Program/script", enter the path to your PHP executable, e.g., `C:\php\php.exe`.
+   - In "Add arguments (optional)", enter `artisan schedule:run`.
+   - In "Start in (optional)", enter the full path to your Laravel project's root directory (where the artisan file is located), e.g., `C:\path\to\your\project`.
+   - Click "OK" to save the action.
+
+6. **Conditions and Settings Tabs**
+   - Review these tabs for additional settings that might be useful for your specific setup, such as running the task only if the computer is idle, on AC power, etc.
+   - Under Settings, you might want to ensure "Stop the task if it runs longer than:" is set to a suitable value, like "1 hour", to prevent a stuck task from running indefinitely.
+
+7. **Save the Task**
+   - Enter the password for your user account if prompted (required if you selected "Run whether user is logged on or not").
+   - Click "OK" to save the task.

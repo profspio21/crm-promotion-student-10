@@ -60,7 +60,7 @@
                             {{ trans('cruds.information.fields.publish_date') }}
                         </th>
                         <td>
-                            {{ $information->start_publish_date ?? 'Tidak ada tanggal mulai publish' }} --- {{ $information->end_publish_date ?? 'Tidak ada tanggal akhir publish'}}
+                            {{ $information->start_publish_date_label ?? 'Tidak ada tanggal mulai publish' }} --- {{ $information->end_publish_date_label ?? 'Tidak ada tanggal akhir publish'}}
                         </td>
                     </tr>
                     <tr>

@@ -17,12 +17,12 @@ class Information extends Model implements HasMedia
     public $table = 'informations';
 
     protected $appends = [
-        'poster', 'start_publish_date_label', 'end_publish_date_label'
+        'poster', 'start_publish_date_label', 'end_publish_date_label', 'start_publish_date_dmy', 'end_publish_date_dmy'
     ];
 
     protected $dates = [
         'created_at',
-        'deleted_at'
+        'updated_at'
     ];
 
     protected $fillable = [
@@ -34,7 +34,8 @@ class Information extends Model implements HasMedia
         'end_publish_date',
         'media_informasi',
         'created_at',
-        'deleted_at'
+        'updated_at',
+        'notified'
     ];
 
     public const TYPE_SELECT =
@@ -85,6 +86,16 @@ class Information extends Model implements HasMedia
         return $this->attributes['start_publish_date'] ? Carbon::parse($this->attributes['start_publish_date'])->format('d F Y') : null;
     }
 
+    public function getStartPublishDateDmyAttribute()
+    {
+        return $this->attributes['start_publish_date'] ? Carbon::parse($this->attributes['start_publish_date'])->format('d-m-Y') : null;
+    }
+
+    public function getEndPublishDateDmyAttribute()
+    {
+        return $this->attributes['end_publish_date'] ? Carbon::parse($this->attributes['end_publish_date'])->format('d-m-Y') : null;
+    }
+
     public function setStartPublishDateAttribute($value)
     {
         $this->attributes['start_publish_date'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
@@ -92,7 +103,7 @@ class Information extends Model implements HasMedia
 
     public function getEndPublishDateLabelAttribute($value)
     {
-        return $value ? Carbon::parse($value)->format('d F Y') : null;
+        return $this->attributes['end_publish_date'] ? Carbon::parse($this->attributes['end_publish_date'])->format('d F Y') : null;
     }
 
     public function setEndPublishDateAttribute($value)
