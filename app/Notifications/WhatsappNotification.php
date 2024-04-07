@@ -29,10 +29,11 @@ class WhatsappNotification extends Notification implements ShouldQueue
     {
         return (new WhacenterService())
             ->to($this->data['no_hp'])
+            ->file($this->data['file_url'])
             ->line('Salam hangat dari PMB UKDW')
             ->line('')
             ->line($this->data['title'])
-            ->line('Klik tombol dibawah ini untuk melihat detail informasi')
+            ->line('Klik link dibawah ini untuk melihat detail informasi')
             ->line((config('app.url').'/admin/selection-informations/'.$this->data['id']));
 
     }
