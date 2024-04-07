@@ -31,12 +31,15 @@ class InformationActionObserver
             $target = Information::TARGET_SELECT[$information->target];
 
             $users = User::whereHas('roles', function($q) {
-                return $q->where('title', 'Pendaftar');
-            })->with(['registrant' => function($q) use($information) {
+                $q->where('title', 'Pendaftar');
+            })
+            ->whereHas('registrant', function($q) use($information) {
                 $q->where('status', $information->target);
-            }])->whereHas('registrant', function($q) use($information) {
-                return $q->where('status', $information->target);
-            })->get();
+            })
+            ->with(['registrant' => function($q) use($information) {
+                $q->where('status', $information->target);
+            }])
+            ->get();
 
             $file_url = '';
             if(isset($information->poster)) {

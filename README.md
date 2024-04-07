@@ -95,7 +95,7 @@ Setup env (.env)
     ```
 
 ## Migration and seeding database
-
+## Please Run this Carefully
 1. Run migration :
 
     ```php
@@ -134,7 +134,7 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
-# Setting Up a Task in Windows Task Scheduler
+# Setting Up a Task in Windows Task Scheduler (Automatic Notification)
 
 Follow these steps to set up a task in Windows Task Scheduler to run a Laravel schedule:
 
@@ -173,3 +173,25 @@ Follow these steps to set up a task in Windows Task Scheduler to run a Laravel s
 7. **Save the Task**
    - Enter the password for your user account if prompted (required if you selected "Run whether user is logged on or not").
    - Click "OK" to save the task.
+
+## Running Manual Notificatin
+
+1. Run :
+
+    ```php
+    php artisan schedule:run >> /dev/null 2>&1
+    ```
+
+2. Run :
+
+    ```php
+    php artisan queue:work --stop-when-empty
+    ```
+
+3. You can see table 'jobs' and 'failed_jobs' in database
+
+4. Retry the failed jobs (moving failed_jobs to jobs)
+
+     ```php
+    php artisan queue:retry all 
+    ```
