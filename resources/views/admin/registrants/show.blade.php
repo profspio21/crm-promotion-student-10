@@ -81,6 +81,22 @@
                     </tr>
                     <tr>
                         <th>
+                            {{ trans('cruds.registrant.fields.user') }}
+                        </th>
+                        <td>
+                            {{ $registrant->user->email ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.registrant.fields.user') }}
+                        </th>
+                        <td>
+                            {{ $registrant->phone ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
                             {{ trans('cruds.registrant.fields.photo') }}
                         </th>
                         <td>

@@ -9,6 +9,8 @@ use App\Models\User;
 use Carbon\Carbon;
 use App\Notifications\DataChangeEmailNotification;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Http\Request;
+use Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -26,8 +28,11 @@ class Kernel extends ConsoleKernel
 
         $schedule->call(function () {
             $now = Carbon::now()->format('Y-m-d');
+            Log::info('ok');
         
             $informations = Information::where('notified', 'belum')->where('start_publish_date', '<=', $now)->where('end_publish_date', '>=', $now)->get();
+
+            Log::info($informations);
                             
             foreach ($informations as $information) {
                 $information->update(['notified' => 'proses']);
