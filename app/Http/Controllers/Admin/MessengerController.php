@@ -37,7 +37,7 @@ class MessengerController extends Controller
                 })->get()
                 ->except(Auth::id());
         }
-        if(auth()->user()->hasRole('staff')) {
+        else {
             $users = User::with('registrant')->whereHas('roles', function($q) {
                     return $q->where('title', 'Pendaftar');
                 })->get()
